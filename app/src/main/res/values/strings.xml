@@ -2,7 +2,7 @@
     <string name="app_name">HealthyBite</string>
     <string name="emoji_title_name">🥦</string>
     <string name="title_app">HealthyBite</string>
-    <string name="welcome_greeting">Buenos días,</string>
+    <string name="welcome_greeting">¡Hola!</string>
     <string name="user">Usuario 👋</string>
     <string name="total_day_text">🔥 Total del día:</string>
     <string name="kcal_text">0 kcal</string>
@@ -17,4 +17,15 @@
     <string name="hint_food_name">Nombre de la comida</string>
     <string name="hint_base_calories">Calorías base</string>
     <string name="check_processed">Comida procesada</string>
+    <string name="summary_text">Resumen</string>
+    <string name="food_storage_verification">Tu Alimento Guardado</string>
+    <string name="food">Comida</string>
+    <string name="processed_question">¿Procesado?</string>
+    <string name="total_calories">TOTAL CALORÍAS</string>
+    <string name="kcal">kcal</string>
+    <string name="_10">(+10%)</string>
+    <string name="yes_10">Sí (+10%)</string>
+    <string name="no_10">No (+10%)</string>
+    <string name="load_other_food">Cargar otro alimento</string>
+    <string name="_0">0</string>
 </resources>

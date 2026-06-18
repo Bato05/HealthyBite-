@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1F8E9"
+    android:background="@color/cream"
     android:fillViewport="true"
     tools:context=".view.MainActivity">
 
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/app_name"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_greeting"
-                android:textColor="#B9F6CA"
+                android:textColor="@color/light_green"
                 android:textSize="13sp" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/total_day_text"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:textSize="13sp" />
 
                 <TextView
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kcal_text"
-                    android:textColor="#A5D6A7"
+                    android:textColor="@color/light_green"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/new_food"
-                    android:textColor="#4CAF50"
+                    android:textColor="@color/green"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -133,7 +133,7 @@
                     android:layout_height="1dp"
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
-                    android:background="#E8F5E9" />
+                    android:background="@color/e8f5e9" />
             </LinearLayout>
 
             <!-- Campo nombre -->
@@ -209,8 +209,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CATEGORÍA"
-                    android:textColor="#4CAF50"
+                    android:text="@string/category"
+                    android:textColor="@color/green"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -259,7 +259,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/options"
-                    android:textColor="#4CAF50"
+                    android:textColor="@color/green"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -268,7 +268,7 @@
                     android:layout_height="1dp"
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
-                    android:background="#E8F5E9" />
+                    android:background="@color/e8f5e9" />
             </LinearLayout>
 
             <!-- Checkbox procesado -->
@@ -291,8 +291,8 @@
                     android:layout_weight="1"
                     android:text="@string/check_processed"
                     android:textSize="14dp"
-                    android:textColor="#424242"
-                    android:buttonTint="#4CAF50" />
+                    android:textColor="@color/grey"
+                    android:buttonTint="@color/green" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -315,7 +315,7 @@
                 android:layout_height="56dp"
                 android:background="@drawable/bg_btn_primary"
                 android:text="@string/btn_calculate"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
