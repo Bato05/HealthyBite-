@@ -1,5 +1,6 @@
 package com.example.healthybite.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import com.example.healthybite.databinding.ActivityMainBinding
 import com.example.healthybite.model.FoodItem
 import com.example.healthybite.viewmodel.MainViewModel
+import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,15 +58,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Observamos el estado reactivo del ViewModel
         viewModel.calculatedFood.observe(this) { foodItem ->
-            // Cuando el cálculo termina, actualizamos la interfaz
-            // Por ejemplo, actualizando el "chip" de calorías totales
+            // Actualizamos la interfaz
             binding.tvDailyCaloriesTotal.text = "${foodItem.totalCalories.toInt()} kcal"
+            Toast.makeText(this, "${foodItem.name} guardado con éxito", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this, "${foodItem.name} calculado con éxito", Toast.LENGTH_SHORT).show()
-
-            // Próximo paso: Enviar este foodItem a la SummaryActivity
+            // Creamos el Intent para viajar a la siguiente pantalla
+            val intent = Intent(this, SummaryActivity::class.java).apply {
+                // Le pasamos el objeto completo a la siguiente pantalla
+                putExtra("EXTRA_FOOD_ITEM", foodItem)
+            }
+            startActivity(intent)
         }
     }
 }
