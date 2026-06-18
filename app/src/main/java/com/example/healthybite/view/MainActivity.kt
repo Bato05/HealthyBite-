@@ -1,7 +1,12 @@
 package com.example.healthybite.view
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivityMainBinding
 import com.example.healthybite.model.FoodItem
 import com.example.healthybite.viewmodel.MainViewModel
@@ -17,64 +23,72 @@ import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
-    // 1. Declaramos la variable de View Binding
     private lateinit var binding: ActivityMainBinding
-    // 2. Instanciamos el ViewModel
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 2. PRIMERO inicializamos View Binding inflando el layout
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 3. DESPUÉS usamos el binding para ajustar los insets de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Recuperamos el nombre que mandó el LoginActivity
         val username = intent.getStringExtra("EXTRA_USERNAME") ?: "Usuario"
-
-        // Reemplazamos el texto por defecto en la vista
         binding.tvUserName.text = username
 
-        // 4. Finalmente llamamos a tus funciones
+        setupSpinner()
         setupListeners()
         setupObservers()
     }
 
+    private fun setupSpinner() {
+        val categories = resources.getStringArray(R.array.categories_array)
+
+        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories) {
+            override fun isEnabled(position: Int): Boolean = position != 0
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view as TextView
+                textView.setTextColor(if (position == 0) Color.GRAY else Color.BLACK)
+                return view
+            }
+        }
+        binding.spCategory.adapter = adapter
+    }
+
     private fun setupListeners() {
         binding.btnCalculate.setOnClickListener {
+            // Recolectamos la información cruda y se la mandamos directo al ViewModel
             val foodName = binding.etFoodName.text.toString()
             val baseCalories = binding.etBaseCalories.text.toString()
             val isProcessed = binding.cbIsProcessed.isChecked
-            val category = binding.spCategory.selectedItem?.toString() ?: "General"
+            val categoryPosition = binding.spCategory.selectedItemPosition
+            val category = binding.spCategory.selectedItem?.toString() ?: ""
 
-            // Validamos que el nombre no esté vacío antes de enviar al ViewModel
-            if (foodName.isNotBlank() && baseCalories.isNotBlank()) {
-                viewModel.calculateCalories(foodName, baseCalories, category, isProcessed)
-            } else {
-                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
-            }
+            viewModel.calculateCalories(foodName, baseCalories, category, categoryPosition, isProcessed)
         }
     }
 
     private fun setupObservers() {
+        // Observamos el éxito
         viewModel.calculatedFood.observe(this) { foodItem ->
-            // Actualizamos la interfaz
             binding.tvDailyCaloriesTotal.text = "${foodItem.totalCalories.toInt()} kcal"
-            Toast.makeText(this, "${foodItem.name} guardado con éxito", Toast.LENGTH_SHORT).show()
 
-            // Creamos el Intent para viajar a la siguiente pantalla
             val intent = Intent(this, SummaryActivity::class.java).apply {
-                // Le pasamos el objeto completo a la siguiente pantalla
                 putExtra("EXTRA_FOOD_ITEM", foodItem)
             }
             startActivity(intent)
+        }
+
+        // Observamos los errores
+        viewModel.errorMessage.observe(this) { errorMsg ->
+            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
         }
     }
 }

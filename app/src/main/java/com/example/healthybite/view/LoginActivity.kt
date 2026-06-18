@@ -4,15 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivityLoginBinding
+import com.example.healthybite.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    // Instanciamos el ViewModel
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +30,31 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        setupListeners()
+        setupObservers()
+    }
+
+    private fun setupListeners() {
         binding.btnLogin.setOnClickListener {
+            // Le pasamos el dato crudo al ViewModel y él decide
             val username = binding.etUsername.text.toString().trim()
+            viewModel.login(username)
+        }
+    }
 
-            if (username.isNotEmpty()) {
-                // Viajamos a MainActivity pasándole el nombre de usuario
-                val intent = Intent(this, MainActivity::class.java).apply {
-                    putExtra("EXTRA_USERNAME", username)
-                }
-                startActivity(intent)
-
-                // IMPORTANTE: Llamamos a finish() para cerrar la pantalla de Login
-                // Así, si el usuario toca la flecha de volver, sale de la app en lugar de volver al login
-                finish()
-            } else {
-                Toast.makeText(this, "Por favor, ingresa tu nombre", Toast.LENGTH_SHORT).show()
+    private fun setupObservers() {
+        // Observamos si debemos navegar
+        viewModel.navigateToMain.observe(this) { username ->
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("EXTRA_USERNAME", username)
             }
+            startActivity(intent)
+            finish()
+        }
+
+        // Observamos si hay que mostrar un error
+        viewModel.errorMessage.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
