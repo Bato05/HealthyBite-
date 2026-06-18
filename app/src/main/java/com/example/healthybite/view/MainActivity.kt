@@ -36,6 +36,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        // Recuperamos el nombre que mandó el LoginActivity
+        val username = intent.getStringExtra("EXTRA_USERNAME") ?: "Usuario"
+
+        // Reemplazamos el texto por defecto en la vista
+        binding.tvUserName.text = username
+
         // 4. Finalmente llamamos a tus funciones
         setupListeners()
         setupObservers()

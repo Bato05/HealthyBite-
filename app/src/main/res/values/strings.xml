@@ -28,4 +28,5 @@
     <string name="no_10">No (+10%)</string>
     <string name="load_other_food">Cargar otro alimento</string>
     <string name="_0">0</string>
+    <string name="login_text">INICIAR SESIÓN</string>
 </resources>
