@@ -4,7 +4,7 @@
     <string name="title_app">HealthyBite</string>
     <string name="welcome_greeting">¡Hola!</string>
     <string name="user">Usuario 👋</string>
-    <string name="total_day_text">🔥 Total del día:</string>
+    <string name="total_day_text">🔥 Total del día: </string>
     <string name="kcal_text">0 kcal</string>
     <string name="new_food">NUEVO ALIMENTO</string>
     <string name="emoji_new_food">🥗</string>
@@ -29,6 +29,13 @@
     <string name="load_other_food">Cargar otro alimento</string>
     <string name="_0">0</string>
     <string name="login_text">INICIAR SESIÓN</string>
+    <string name="loading">Cargando...</string>
+    <string name="lats_food_registed">Último alimento registrado:</string>
+    <string name="my_diary">Mi Diario</string>
+    <string name="record">Historial</string>
+    <string name="return_home">Volver al inicio</string>
+    <string name="food_session">Alimentos de la sesión</string>
+    <string name="food_item_category_emoji">🥗</string>
 
     <string-array name="categories_array">
         <item>Seleccione una categoría...</item>

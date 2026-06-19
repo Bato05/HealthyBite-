@@ -1,6 +1,5 @@
 package com.example.healthybite.view
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivitySummaryBinding
 import com.example.healthybite.model.FoodItem
 import com.example.healthybite.viewmodel.SummaryViewModel

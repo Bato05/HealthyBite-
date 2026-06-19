@@ -2,14 +2,16 @@ package com.example.healthybite.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /**
  * FoodRepository handles the data layer for the MVVM architecture.
  * It uses SharedPreferences to save and retrieve data persistently on the device.
  *
  * Methods:
- * - saveLastFoodName(name): Saves the food name locally in the background.
+ * - saveFood(foodItem): Saves the food locally in the session.
  * - getLastFoodName(): Retrieves the saved name, returning "Ninguno" if empty.
+ * - getSessionFoodList(): Returns the list of FoodItems
  */
 
 class FoodRepository(context: Context) {
@@ -18,9 +20,16 @@ class FoodRepository(context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("HealthyBitePrefs", Context.MODE_PRIVATE)
 
-    // 2. Función para guardar información (ejemplo: guardar si un alimento fue registrado)
-    fun saveLastFoodName(foodName: String) {
-        sharedPreferences.edit().putString("LAST_FOOD_NAME", foodName).apply()
+    // Lista en memoria para la sesión actual
+    companion object {
+        private val sessionFoodList = mutableListOf<FoodItem>()
+    }
+
+    // 2. Función para guardar el FoodItem
+    // Guarda en SharedPreferences y en la lista de sesión al mismo tiempo
+    fun saveFood(foodItem: FoodItem) {
+        sharedPreferences.edit { putString("LAST_FOOD_NAME", foodItem.name) }
+        sessionFoodList.add(foodItem)
     }
 
     // 3. Función para recuperar la información
@@ -28,6 +37,8 @@ class FoodRepository(context: Context) {
         return sharedPreferences.getString("LAST_FOOD_NAME", "Ninguno") ?: "Ninguno"
     }
 
-    // Nota: Más adelante podemos agregar funciones para guardar la lista completa
-    // de FoodItem usando JSON, o guardar el total de calorías.
+    // 4. Retorna la lista de comidas o FoodItems
+    fun getSessionFoodList(): List<FoodItem> {
+        return sessionFoodList.toList()
+    }
 }

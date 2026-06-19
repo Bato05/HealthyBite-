@@ -12,12 +12,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivityMainBinding
-import com.example.healthybite.model.FoodItem
 import com.example.healthybite.viewmodel.MainViewModel
 import kotlin.jvm.java
 
@@ -73,6 +69,12 @@ class MainActivity : AppCompatActivity() {
 
             viewModel.calculateCalories(foodName, baseCalories, category, categoryPosition, isProcessed)
         }
+
+        // Navegacion hacia el DiaryActivity
+        binding.btnOpenDiary.setOnClickListener {
+            val intent = Intent(this, DiaryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupObservers() {
@@ -86,9 +88,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Observamos el total acumulado y lo pintamos en el chip
+        viewModel.dailyTotalCalories.observe(this) { total ->
+            binding.tvDailyCaloriesTotal.text = "$total kcal"
+        }
+
         // Observamos los errores
         viewModel.errorMessage.observe(this) { errorMsg ->
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Le decimos al ViewModel que recalcule el total al entrar o volver a esta pantalla
+        viewModel.updateDailyTotal()
     }
 }

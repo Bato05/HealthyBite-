@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivityLoginBinding
 import com.example.healthybite.viewmodel.LoginViewModel
 
