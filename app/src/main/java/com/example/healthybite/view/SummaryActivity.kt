@@ -39,7 +39,7 @@ class SummaryActivity : AppCompatActivity() {
 
     private fun getDataAndLoadViewModel() {
         val foodItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("EXTRA_FOOD_ITEM", FoodItem::class.java)
+            intent.getParcelableExtra(MainActivity.EXTRA_FOOD_ITEM, FoodItem::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra("EXTRA_FOOD_ITEM") as? FoodItem

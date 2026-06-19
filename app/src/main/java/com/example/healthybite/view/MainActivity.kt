@@ -14,13 +14,23 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.healthybite.R
 import com.example.healthybite.databinding.ActivityMainBinding
+import com.example.healthybite.model.FoodRepository
 import com.example.healthybite.viewmodel.MainViewModel
+import com.example.healthybite.viewmodel.MainViewModelFactory
 import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory(FoodRepository(applicationContext))
+    }
+
+    // CASO D: Agrupamos las claves de navegación aquí para evitar errores de tipeo
+    companion object {
+        const val EXTRA_USERNAME = "EXTRA_USERNAME"
+        const val EXTRA_FOOD_ITEM = "EXTRA_FOOD_ITEM"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +44,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val username = intent.getStringExtra("EXTRA_USERNAME") ?: "Usuario"
+        // Usamos la constante segura en lugar del string hardcodeado
+        val username = intent.getStringExtra(EXTRA_USERNAME) ?: "Usuario"
         binding.tvUserName.text = username
 
         setupSpinner()
@@ -60,7 +71,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnCalculate.setOnClickListener {
-            // Recolectamos la información cruda y se la mandamos directo al ViewModel
             val foodName = binding.etFoodName.text.toString()
             val baseCalories = binding.etBaseCalories.text.toString()
             val isProcessed = binding.cbIsProcessed.isChecked
@@ -70,7 +80,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.calculateCalories(foodName, baseCalories, category, categoryPosition, isProcessed)
         }
 
-        // Navegacion hacia el DiaryActivity
         binding.btnOpenDiary.setOnClickListener {
             val intent = Intent(this, DiaryActivity::class.java)
             startActivity(intent)
@@ -78,22 +87,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Observamos el éxito
-        viewModel.calculatedFood.observe(this) { foodItem ->
-            binding.tvDailyCaloriesTotal.text = "${foodItem.totalCalories.toInt()} kcal"
+        viewModel.calculatedFood.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { foodItem ->
 
-            val intent = Intent(this, SummaryActivity::class.java).apply {
-                putExtra("EXTRA_FOOD_ITEM", foodItem)
+                binding.tvDailyCaloriesTotal.text = getString(R.string.format_calories_kcal, foodItem.totalCalories.toInt())
+
+                val intent = Intent(this, SummaryActivity::class.java).apply {
+                    putExtra(EXTRA_FOOD_ITEM, foodItem)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
         }
 
-        // Observamos el total acumulado y lo pintamos en el chip
         viewModel.dailyTotalCalories.observe(this) { total ->
-            binding.tvDailyCaloriesTotal.text = "$total kcal"
+            // CASO B: Utilizamos los resources correctamente en lugar de concatenar
+            binding.tvDailyCaloriesTotal.text = getString(R.string.format_calories_kcal, total)
         }
 
-        // Observamos los errores
         viewModel.errorMessage.observe(this) { errorMsg ->
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
         }
@@ -101,7 +111,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Le decimos al ViewModel que recalcule el total al entrar o volver a esta pantalla
         viewModel.updateDailyTotal()
     }
 }

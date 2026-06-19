@@ -36,6 +36,7 @@
     <string name="return_home">Volver al inicio</string>
     <string name="food_session">Alimentos de la sesión</string>
     <string name="food_item_category_emoji">🥗</string>
+    <string name="format_calories_kcal">%1$d kcal</string>
 
     <string-array name="categories_array">
         <item>Seleccione una categoría...</item>

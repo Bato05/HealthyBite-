@@ -1,25 +1,21 @@
 package com.example.healthybite.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.healthybite.model.FoodItem
 import com.example.healthybite.model.FoodRepository
+import com.example.healthybite.view.Event
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(private val repository: FoodRepository) : ViewModel() {
 
-    private val repository = FoodRepository(application)
-
-    private val _calculatedFood = MutableLiveData<FoodItem>()
-    val calculatedFood: LiveData<FoodItem> get() = _calculatedFood
+    private val _calculatedFood = MutableLiveData<Event<FoodItem>>()
+    val calculatedFood: LiveData<Event<FoodItem>> get() = _calculatedFood
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
-    // Guarda el acumulado de las calorias por alimento
     private val _dailyTotalCalories = MutableLiveData<Int>()
-
     val dailyTotalCalories: LiveData<Int> get() = _dailyTotalCalories
 
     fun calculateCalories(name: String, baseCaloriesStr: String, category: String, categoryPosition: Int, isProcessed: Boolean) {
@@ -40,14 +36,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             totalCalories = total
         )
 
-        // Aquí usamos la función actualizada del Repositorio
         repository.saveFood(foodItem)
-
-        _calculatedFood.value = foodItem
+        _calculatedFood.value = Event(foodItem)
     }
 
     fun updateDailyTotal() {
-        // Obtenemos la lista de la sesión y sumamos las calorías totales
         val total = repository.getSessionFoodList().sumOf { it.totalCalories.toInt() }
         _dailyTotalCalories.value = total
     }
