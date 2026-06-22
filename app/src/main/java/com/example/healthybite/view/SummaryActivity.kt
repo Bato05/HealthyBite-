@@ -45,12 +45,11 @@ class SummaryActivity : AppCompatActivity() {
             intent.getParcelableExtra("EXTRA_FOOD_ITEM") as? FoodItem
         }
 
-        // Le enviamos el objeto crudo al ViewModel
+        // Le enviamos el objeto al ViewModel
         foodItem?.let { viewModel.loadFoodData(it) }
     }
 
     private fun setupObservers() {
-        // La vista solo obedece
         viewModel.foodName.observe(this) { binding.tvSummaryName.text = it }
         viewModel.category.observe(this) { binding.tvSummaryCategory.text = it }
         viewModel.baseCalories.observe(this) { binding.tvSummaryBaseCalories.text = it }
