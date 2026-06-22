@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnLogin.setOnClickListener {
-            // Le pasamos el dato crudo al ViewModel y él decide
+            // Le pasamos el dato al ViewModel
             val username = binding.etUsername.text.toString().trim()
             viewModel.login(username)
         }

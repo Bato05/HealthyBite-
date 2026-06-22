@@ -18,7 +18,7 @@ class SummaryViewModel : ViewModel() {
     private val _baseCalories = MutableLiveData<String>()
     val baseCalories: LiveData<String> get() = _baseCalories
 
-    // Guardamos las referencias a los recursos (Int) para no importar dependencias de la vista aquí
+    // Guardamos las referencias a los recursos (Int) para no importar dependencias de la vista
     private val _processedTextResId = MutableLiveData<Int>()
     val processedTextResId: LiveData<Int> get() = _processedTextResId
 

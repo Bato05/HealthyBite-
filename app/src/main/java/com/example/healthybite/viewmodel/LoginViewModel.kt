@@ -16,10 +16,10 @@ class LoginViewModel : ViewModel() {
 
     fun login(username: String) {
         if (username.isNotBlank()) {
-            // Lógica exitosa: enviamos el nombre para que la vista navegue
+            // enviamos el nombre a la vista
             _navigateToMain.value = username
         } else {
-            // Lógica fallida: enviamos un error
+            // enviamos un error
             _errorMessage.value = "Por favor, ingresa tu nombre"
         }
     }

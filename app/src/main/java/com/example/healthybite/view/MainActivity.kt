@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         MainViewModelFactory(FoodRepository(applicationContext))
     }
 
-    // CASO D: Agrupamos las claves de navegación aquí para evitar errores de tipeo
+    // Agrupamos las claves de navegación
     companion object {
         const val EXTRA_USERNAME = "EXTRA_USERNAME"
         const val EXTRA_FOOD_ITEM = "EXTRA_FOOD_ITEM"
@@ -44,8 +44,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Usamos la constante segura en lugar del string hardcodeado
-        val username = intent.getStringExtra(EXTRA_USERNAME) ?: "Usuario"
+        val username = intent.getStringExtra(EXTRA_USERNAME) ?: getString(R.string.user)
         binding.tvUserName.text = username
 
         setupSpinner()
@@ -100,7 +99,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.dailyTotalCalories.observe(this) { total ->
-            // CASO B: Utilizamos los resources correctamente en lugar de concatenar
             binding.tvDailyCaloriesTotal.text = getString(R.string.format_calories_kcal, total)
         }
 
