@@ -21,23 +21,23 @@ class MainViewModel(private val repository: FoodRepository) : ViewModel() {
     fun calculateCalories(name: String, baseCaloriesStr: String, category: String, categoryPosition: Int, isProcessed: Boolean) {
         if (name.isBlank() || baseCaloriesStr.isBlank() || categoryPosition == 0) {
             _errorMessage.value = "Por favor, completa todos los campos"
-            return
         }
+        else {
+            val baseCalories = baseCaloriesStr.toIntOrNull() ?: 0
+            val multiplier = if (isProcessed) 1.10 else 1.0
+            val total = baseCalories * multiplier
 
-        val baseCalories = baseCaloriesStr.toIntOrNull() ?: 0
-        val multiplier = if (isProcessed) 1.10 else 1.0
-        val total = baseCalories * multiplier
+            val foodItem = FoodItem(
+                name = name,
+                baseCalories = baseCalories,
+                category = category,
+                isProcessed = isProcessed,
+                totalCalories = total
+            )
 
-        val foodItem = FoodItem(
-            name = name,
-            baseCalories = baseCalories,
-            category = category,
-            isProcessed = isProcessed,
-            totalCalories = total
-        )
-
-        repository.saveFood(foodItem)
-        _calculatedFood.value = Event(foodItem)
+            repository.saveFood(foodItem)
+            _calculatedFood.value = Event(foodItem)
+        }
     }
 
     fun updateDailyTotal() {
